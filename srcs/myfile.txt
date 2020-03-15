@@ -1,0 +1,15 @@
+$$$ exec p2 : [../filler/srcs/a.out]
+Plateau 3 6:
+    012345
+000 .OO...
+001 ......
+002 ...X..
+Piece 1 3:
+.**
+(null)
+(null)
+(null)
+(null)
+(null)
+(null)
+(null)
