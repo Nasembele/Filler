@@ -61,19 +61,20 @@ int ft_create_heatmap(t_map *map, t_start *inf_pl)
     while (j < map->height)
     {
         i = 0;
+        map->ht_map[j] = (int*)malloc(sizeof(int) * map->width); // проверить на выделение и зафришить в конце
         while (i < map->width)
         {
-            map->ht_map[j] = (int*)malloc(sizeof(int) * map->width); // проверить на выделение и зафришить в конце
+            //map->ht_map[j] = (int*)malloc(sizeof(int) * map->width); // проверить на выделение и зафришить в конце
             if (map->map[j][i] == '.')
                 map->ht_map[j][i] = ft_dist(map, j, i, inf_pl);
             else if (map->map[j][i] == inf_pl->my_symb || map->map[j][i] == inf_pl->my_symb + 32)
                     map->ht_map[j][i] = 0; // мои фигуры
                 else
                     map->ht_map[j][i] = -1; // вражеские фигуры
-            printf("%d", map->ht_map[j][i]); // потом убрать
+            //printf("%d", map->ht_map[j][i]); // потом убрать
             i++;
         }
-        printf("\n"); // потом убрать
+        //printf("\n"); // потом убрать
         j++;
     }
     return (0);

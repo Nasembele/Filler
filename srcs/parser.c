@@ -16,11 +16,17 @@ int ft_parse_player(t_start *inf_pl, t_map *map)
 {
     char    *line;
     int     i;
-
+    // считать по символу и чекать что за строка
     get_next_line(map->fd, &line);
     //валидация на строку
     //line = "p2";
     i = 0;
+    //if (line[i] != '$')
+    //{
+    //    
+    //    line = NULL;
+    //    return (0);
+    //}
     while (line[i] != 'p')
         i++;
     if (line[++i] == '1')
@@ -33,8 +39,8 @@ int ft_parse_player(t_start *inf_pl, t_map *map)
         inf_pl->my_symb = 'X'; 
         inf_pl->enemy_symb = 'O';
     }
-    printf("%s\n", line);
-    printf("%c\n", inf_pl->my_symb);
+    //printf("%s\n", line);
+    //printf("%c\n", inf_pl->my_symb);
     line = NULL;
     return (0);
 }
@@ -48,6 +54,7 @@ int ft_parse_map_size(t_map *map)
     map->height = 0;
     map->width = 0;
     check_width = 0;
+    i = 0;
     get_next_line(map->fd, &line);
     //валидация на строку
     //line = "pgdfg 3 9";
@@ -71,9 +78,9 @@ int ft_parse_map_size(t_map *map)
         }
         i++;
     }
-    printf("%s\n", line);
-    printf("h %d\n", map->height);
-    printf("w %d\n", map->width);
+    //printf("%s\n", line);
+    //printf("h %d\n", map->height);
+    //printf("w %d\n", map->width);
     line = NULL;
     return (0);
 }
@@ -111,7 +118,7 @@ int ft_parse_map(t_map *map)
         line = ft_strbackcat(line, 4, map->width);
         //map->map[j] = (char*)malloc(sizeof(char) * map->width); // проверить на выделение и зафришить в конце
         map->map[j] = line;
-        printf("%s\n", map->map[j]);
+        //printf("%s\n", map->map[j]);
         j++;
         line = NULL;
     }

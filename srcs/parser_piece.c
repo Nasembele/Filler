@@ -21,7 +21,7 @@ int ft_parse_piece_size(t_map *map, t_piece *pic)
     tab = ft_strsplit(line, ' ');
     pic->height = ft_atoi(tab[1]);
     pic->width = ft_atoi(ft_strsplit(tab[2], ':')[0]);
-    printf("%d %d\n", pic->height, pic->width); // потом убрать
+    //printf("%d %d\n", pic->height, pic->width); // потом убрать
     line = NULL;
     return (0);
 }
@@ -40,7 +40,7 @@ int ft_parse_piece(t_map *map, t_piece *pic)
         get_next_line(map->fd, &line);
         //map->map[j] = (char*)malloc(sizeof(char) * map->width); // проверить на выделение и зафришить в конце
         pic->pic[j] = line;
-        printf("%s\n", pic->pic[j]);
+        //printf("%s\n", pic->pic[j]);
         j++;
         line = NULL;
     }

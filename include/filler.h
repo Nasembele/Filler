@@ -36,6 +36,16 @@ typedef struct  s_piece
     char        **pic;
 }               t_piece;
 
+typedef struct  s_coord
+{
+    int         t_y;
+    int         t_x;
+    int         y;
+    int         x;
+    int         t_eval;
+    int         eval;
+}               t_coord;
+
 int     ft_parse_player(t_start *inf_pl, t_map *map);
 int     ft_parse_map_size(t_map *map);
 char    *ft_strbackcat(char *line, int num, int size);
@@ -46,3 +56,4 @@ int     ft_dist(t_map *map, int my_j, int my_i, t_start *inf_pl);
 int     ft_parse_piece_size(t_map *map, t_piece *pic);
 int     ft_parse_piece(t_map *map, t_piece *pic);
 int     ft_algorithm(t_map *map, t_piece *pic);
+int     ft_fitt(t_map *map, int j, int i, t_piece *pic, t_coord *dot);
