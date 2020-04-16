@@ -56,6 +56,8 @@ int ft_parse_map_size(t_map *map)
     check_width = 0;
     i = 0;
     get_next_line(map->fd, &line);
+    if (!line || !line[i])
+        return (0);
     //валидация на строку
     //line = "pgdfg 3 9";
     while (line[i])
@@ -82,7 +84,7 @@ int ft_parse_map_size(t_map *map)
     //printf("h %d\n", map->height);
     //printf("w %d\n", map->width);
     line = NULL;
-    return (0);
+    return (1);
 }
 
 char    *ft_strbackcat(char *line, int num, int size)

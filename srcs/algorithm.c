@@ -84,7 +84,7 @@ int ft_algorithm(t_map *map, t_piece *pic)
     while (j < map->height)
     {
         i = 0;
-        while (i < map->height)
+        while (i < map->width)
         {
             if (j + pic->height <= map->height && i + pic->width <= map->width)
                 ft_fitt(map, j, i, pic, &dot);
@@ -92,6 +92,12 @@ int ft_algorithm(t_map *map, t_piece *pic)
         }
         j++;
     }
-    printf("%d %d\n", dot.y, dot.x); // заменить на разрешенную функцию
+    ft_putnbr(dot.y);
+    write(1, " ", 1);
+    ft_putnbr(dot.x);
+    write(1, "\n", 1);
+    //printf("%d %d\n", dot.y, dot.x); // заменить на разрешенную функцию
+    
+    //ft_putnbr(dot.x);
     return (0);    
 }
