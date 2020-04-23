@@ -56,15 +56,15 @@ int ft_create_heatmap(t_map *map, t_start *inf_pl)
     int i;
 
     j = 0;
-    map->ht_map = (int**)malloc(sizeof(int*) * map->height); // проверить на выделение и зафришить в конце
-
+    if (!(map->ht_map = (int**)malloc(sizeof(int*) * map->height))) //  зафришить в конце
+        return (0);
     while (j < map->height)
     {
         i = 0;
-        map->ht_map[j] = (int*)malloc(sizeof(int) * map->width); // проверить на выделение и зафришить в конце
+        if (!(map->ht_map[j] = (int*)malloc(sizeof(int) * map->width)))
+            return (0); //  зафришить в конце
         while (i < map->width)
         {
-            //map->ht_map[j] = (int*)malloc(sizeof(int) * map->width); // проверить на выделение и зафришить в конце
             if (map->map[j][i] == '.')
                 map->ht_map[j][i] = ft_dist(map, j, i, inf_pl);
             else if (map->map[j][i] == inf_pl->my_symb || map->map[j][i] == inf_pl->my_symb + 32)
@@ -77,5 +77,5 @@ int ft_create_heatmap(t_map *map, t_start *inf_pl)
         //printf("\n"); // потом убрать
         j++;
     }
-    return (0);
+    return (1);
 }

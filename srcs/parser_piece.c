@@ -18,12 +18,16 @@ int ft_parse_piece_size(t_map *map, t_piece *pic)
     char    **tab;
 
     get_next_line(map->fd, &line);
+    if (!line || !line[0])
+        return (0);
     tab = ft_strsplit(line, ' ');
+    if (ft_strcmp(tab[0], "Piece") != 0 || !tab[1] || !tab[2])
+        return (0);
     pic->height = ft_atoi(tab[1]);
     pic->width = ft_atoi(ft_strsplit(tab[2], ':')[0]);
     //printf("%d %d\n", pic->height, pic->width); // потом убрать
     line = NULL;
-    return (0);
+    return (1);
 }
 
 int ft_parse_piece(t_map *map, t_piece *pic)
@@ -33,16 +37,19 @@ int ft_parse_piece(t_map *map, t_piece *pic)
 
     //валидация на строку на каждую?
     j = 0;
-    pic->pic = (char**)malloc(sizeof(char*) * pic->height); // проверить на выделение и зафришить в конце
+    if (!(pic->pic = (char**)malloc(sizeof(char*) * pic->height)))
+        return (0); // проверить на выделение и зафришить в конце
     while (j < pic->height)
     {
         //line = "12345678";
         get_next_line(map->fd, &line);
         //map->map[j] = (char*)malloc(sizeof(char) * map->width); // проверить на выделение и зафришить в конце
+        if (!line || !line[0])
+            return (0);
         pic->pic[j] = line;
         //printf("%s\n", pic->pic[j]);
         j++;
         line = NULL;
     }
-    return (0);
+    return (1);
 }

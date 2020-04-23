@@ -17,20 +17,27 @@ int main(void)
     t_start inf_pl;
     t_map   map;
     t_piece pic;
+
+    
     //map.fd = open("/Users/roman/Desktop/filler/srcs/myfile.txt", O_RDONLY);
     map.fd = 0;
-    ft_parse_player(&inf_pl, &map); //map потом убрать для fd для дебага  запускать только первый раз  проверять что есть этот кусок, он есть только вначале?
+    if (!ft_parse_player(&inf_pl, &map))
+        return (0);
     while (1)
     {
         if (!ft_parse_map_size(&map))
             return(0);
-        ft_parse_map(&map);
-        ft_create_heatmap(&map, &inf_pl);
+        if (!ft_parse_map(&map))
+            return (0);
+        if (!ft_create_heatmap(&map, &inf_pl))
+            return (0);
         //printf("%d%d\n", map.ht_map[0][0], map.ht_map[0][1]); //
-        ft_parse_piece_size(&map, &pic);
-        ft_parse_piece(&map, &pic);
+        if (!ft_parse_piece_size(&map, &pic))
+            return (0);
+        if (!ft_parse_piece(&map, &pic))
+            return (0);
         ft_algorithm(&map, &pic);
     }
     return (0);
-} 
+}
 
