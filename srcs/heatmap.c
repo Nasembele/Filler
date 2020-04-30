@@ -56,7 +56,7 @@ int ft_create_heatmap(t_map *map, t_start *inf_pl)
     int i;
 
     j = 0;
-    if (!(map->ht_map = (int**)malloc(sizeof(int*) * map->height))) //  зафришить в конце
+    if (!(map->ht_map = (int**)malloc(sizeof(int*) * map->height))) //  зафришить в конце // еще фиршить все предыдущее
         return (0);
     while (j < map->height)
     {

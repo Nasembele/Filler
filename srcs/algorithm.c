@@ -99,5 +99,55 @@ int ft_algorithm(t_map *map, t_piece *pic)
     //printf("%d %d\n", dot.y, dot.x); // заменить на разрешенную функцию
     
     //ft_putnbr(dot.x);
+    //            char	**curr;
+    //	if (map->map && *map->map)
+	//{
+	//	curr = ((map->map));
+	//	while ((*curr))
+	//		free((*(curr++)));
+	//	free((map->map));
+	//	(map->map) = NULL;
+    //}
+        
+        //free(map->map);
+   // ft_destroy_string_arr(map->map);
+   ft_destroy_string_arr(map->map);
+  free_heatmap(map, map->height);
+   ft_destroy_string_arr(pic->pic);
+
     return (0);    
+}
+
+void		ft_destroy_string_arr(char **t) //??? test
+{
+	char **curr;
+  	if (t && *t)
+	{
+		curr = ((t));
+		while ((*curr) )//&& **curr)
+        {
+			//if (!(*curr))
+              //  break;
+            free((*(curr++)));
+        }
+        free((t));
+		(t) = NULL;
+    }
+}
+
+ void		free_heatmap(t_map *map, int height)
+{
+    int i = 0;
+
+	while (i < height)
+	{
+		if (map->ht_map[i])
+		{
+			free(map->ht_map[i]);
+			map->ht_map[i] = NULL;
+		}
+        i++;
+	}
+	free(map->ht_map);
+	map->ht_map = NULL;
 }

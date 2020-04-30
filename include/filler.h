@@ -46,6 +46,8 @@ typedef struct  s_coord
     int         eval;
 }               t_coord;
 
+void		free_heatmap(t_map *map, int height);
+void		ft_destroy_string_arr(char **arr); //???
 int     ft_parse_player(t_start *inf_pl, t_map *map);
 int     ft_parse_map_size(t_map *map);
 char    *ft_strbackcat(char *line, int num, int size);

@@ -20,7 +20,14 @@ int ft_parse_player(t_start *inf_pl, t_map *map)
     i = 0;
     get_next_line(map->fd, &line);
     if (!line || !line[i])
-        return (0);
+    {
+        if (line)
+        {  
+            free(line); //???
+            line = NULL;
+        }
+        return (0); //neval
+    }
     inf_pl->my_symb = 'A';
     inf_pl->enemy_symb = 'A';
     while (line[i] && line[i] != 'p')
@@ -35,9 +42,10 @@ int ft_parse_player(t_start *inf_pl, t_map *map)
         inf_pl->my_symb = 'X'; 
         inf_pl->enemy_symb = 'O';
     }
-    if (inf_pl->my_symb == 'A')
-        return (0);
+    free(line);
     line = NULL;
+    if (inf_pl->my_symb == 'A')
+        return (0); // neval
     return (1);
 }
 
@@ -54,12 +62,38 @@ int ft_parse_map_size(t_map *map)
     i = 0;
     get_next_line(map->fd, &line);
     if (!line || !line[0])
+    {
+        if (line)
+            free(line); //?
+            line = NULL;
         return (0);
+    }
     tab = ft_strsplit(line, ' ');
     //валидация на строку
     //line = "pgdfg 3 9";
+    char	**current;
     if (ft_strcmp(tab[0], "Plateau") != 0)
+    {
+        free(line);	
+        if (tab && *tab)
+	{
+		current = ((tab));
+		while ((*current))
+			free((*(current++)));
+		free((tab));
+		(tab) = NULL;
+    }
         return (0);
+    }
+          
+    	if (tab && *tab)
+	{
+		current = ((tab));
+		while ((*current))
+			free((*(current++)));
+		free((tab));
+		(tab) = NULL;
+    }
     //map->height = ft_atoi(tab[1]);
     //map->width = 
     while (line[i])
@@ -82,6 +116,7 @@ int ft_parse_map_size(t_map *map)
         }
         i++;
     }
+    free(line);
     line = NULL; // записать и проверить на меньше или равно 0 и выйти 
     if (map->height == 0 || map->width == 0)
         return (0);
@@ -110,23 +145,46 @@ int ft_parse_map(t_map *map)
 {
     char    *line;
     int     j;
+    char    **tab;
 
     get_next_line(map->fd, &line);
     //валидация на строку на каждую?
     j = 0;
-    if (!(map->map = (char**)malloc(sizeof(char*) * map->height)))
+    if (line)
+    {
+        free (line);
+        line = NULL;
+    }
+    if (!(map->map = (char**)malloc(sizeof(char*) * (map->height + 1))))  //new
         return (0); // проверить на выделение и зафришить в конце
     while (j < map->height)
     {
         //line = "12345678";
         get_next_line(map->fd, &line);
-        if (!(line = ft_strbackcat(line, 4, map->width)))
-            return (0);
+       
+        //tmp = ft_strdup(line);
+        //if (!(line = ft_strbackcat(line, 4, map->width)))
+        //    return (0);
+    
         //map->map[j] = (char*)malloc(sizeof(char) * map->width); // проверить на выделение и зафришить в конце
-        map->map[j] = line;
+       // tmp = line;
+        tab = ft_strsplit(line, ' '); // добавить защиту
+        free(line);
+        line = NULL;
+        map->map[j] = ft_strdup(tab[1]);
         //printf("%s\n", map->map[j]);
         j++;
-        line = NULL;
+        //free(line); // так нельзя фришить
+              char	**current;
+    	if (tab && *tab)
+	{
+		current = ((tab));
+		while ((*current))
+			free((*(current++)));
+		free((tab));
+		(tab) = NULL;
     }
+    }
+    map->map[j] = NULL;
     return (1);
 }

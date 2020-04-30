@@ -19,7 +19,7 @@ int main(void)
     t_piece pic;
 
     
-    //map.fd = open("/Users/roman/Desktop/filler/srcs/myfile.txt", O_RDONLY);
+    //map.fd = open("/Users/romannezgovorov/Desktop/code/filler/srcs/myfile.txt", O_RDONLY);
     map.fd = 0;
     if (!ft_parse_player(&inf_pl, &map))
         return (0);
@@ -37,7 +37,11 @@ int main(void)
         if (!ft_parse_piece(&map, &pic))
             return (0);
         ft_algorithm(&map, &pic);
+        
     }
+        
+
+    //free(map->map);
     return (0);
 }
 
