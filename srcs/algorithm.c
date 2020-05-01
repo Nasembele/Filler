@@ -12,133 +12,122 @@
 
 #include "../include/filler.h"
 
-int ft_fitt(t_map *map, int j, int const_i, t_piece *pic, t_coord *dot) // записывает в отдельную структуру координаты и сумму
+int		ft_fitt(t_map *map, t_tmpcd *tmp_dot, t_piece *pic, t_coord *dot)
 {
-    int jp;
-    int ip;
-    int ch_0;
-    int i;
+	int	jp;
+	int	ip;
+	int	ch_0;
+	int	i;
 
-    jp = 0;
-    ip = 0;
-    ch_0 = 0;
-    dot->t_eval = 0;
-    // записать координаты мапы
-    dot->t_y = j;
-    dot->t_x = const_i;
-    while (jp < pic->height)
-    {
-        ip = 0;
-        i = const_i;
-        while (ip < pic->width)
-        {   
-            //printf("hm %d\n", map->ht_map[j][i]); //
-            //printf("pic %c\n", pic->pic[jp][ip]); 
-            if (map->ht_map[j][i] == -1 && pic->pic[jp][ip] == '*')
-                break;
-            if (map->ht_map[j][i] == 0 && pic->pic[jp][ip] == '*' && ch_0 == 1)
-                break; 
-            if (map->ht_map[j][i] == 0 && pic->pic[jp][ip] == '*' && ch_0 == 0)
-                ch_0 = 1;
-            if (map->ht_map[j][i] != 0 && map->ht_map[j][i] != -1 && pic->pic[jp][ip] == '*')
-                dot->t_eval = dot->t_eval + map->ht_map[j][i];
-
-            //if ((map->ht_map[j][i] != 0 && map->ht_map[j][i] != -1) ||
-            //((map->ht_map[j][i] == 0 || map->ht_map[j][i] == -1) && ))
-            
-            ip++;
-            i++;
-        }
-        if (ip < pic->width) //  обнулить сумму и координаты
-        {
-            dot->t_y = 0;
-            dot->t_x = 0;
-            dot->t_eval = 0;
-            return (0);
-        }
-        jp++;
-        j++;
-    }
-    // сравнить оценки
-    if (dot->eval == 0 && ch_0)
-        dot->eval = dot->t_eval;
-    if (dot->t_eval <= dot->eval && ch_0)
-    {
-        dot->eval = dot->t_eval;
-        dot->x = dot->t_x;
-        dot->y = dot->t_y;
-    }
-    return (0);
-}
-
-int ft_algorithm(t_map *map, t_piece *pic)
-{
-    int     j;
-    int     i;
-    t_coord dot;
-
-    j = 0;
-    dot.y = 0;
-    dot.x = 0;
-    dot.eval = 0;
-    while (j < map->height)
-    {
-        i = 0;
-        while (i < map->width)
-        {
-            if (j + pic->height <= map->height && i + pic->width <= map->width)
-                ft_fitt(map, j, i, pic, &dot);
-            i++;
-        }
-        j++;
-    }
-    ft_putnbr(dot.y);
-    write(1, " ", 1);
-    ft_putnbr(dot.x);
-    write(1, "\n", 1);
-    //printf("%d %d\n", dot.y, dot.x); // заменить на разрешенную функцию
-    
-    //ft_putnbr(dot.x);
-    //            char	**curr;
-    //	if (map->map && *map->map)
-	//{
-	//	curr = ((map->map));
-	//	while ((*curr))
-	//		free((*(curr++)));
-	//	free((map->map));
-	//	(map->map) = NULL;
-    //}
-        
-        //free(map->map);
-   // ft_destroy_string_arr(map->map);
-   ft_destroy_string_arr(map->map);
-  free_heatmap(map, map->height);
-   ft_destroy_string_arr(pic->pic);
-
-    return (0);    
-}
-
-void		ft_destroy_string_arr(char **t) //??? test
-{
-	char **curr;
-  	if (t && *t)
+	jp = -1;
+	ip = 0;
+	ch_0 = 0;
+	dot->t_eval = 0;
+	dot->t_y = tmp_dot->j;
+	dot->t_x = tmp_dot->const_i;
+	while (++jp < pic->height)
 	{
-		curr = ((t));
-		while ((*curr) )//&& **curr)
-        {
-			//if (!(*curr))
-              //  break;
-            free((*(curr++)));
-        }
-        free((t));
-		(t) = NULL;
-    }
+		ip = -1;
+		i = tmp_dot->const_i;
+		while (++ip < pic->width)
+		{
+			if (map->ht_map[tmp_dot->j][i] == -1 && pic->pic[jp][ip] == '*')
+				break ;
+			if (map->ht_map[tmp_dot->j][i] == 0
+			&& pic->pic[jp][ip] == '*' && ch_0 == 1)
+				break ;
+			if (map->ht_map[tmp_dot->j][i] == 0
+			&& pic->pic[jp][ip] == '*' && ch_0 == 0)
+				ch_0 = 1;
+			if (map->ht_map[tmp_dot->j][i] != 0
+			&& map->ht_map[tmp_dot->j][i] != -1
+			&& pic->pic[jp][ip] == '*')
+				dot->t_eval = dot->t_eval + map->ht_map[tmp_dot->j][i];
+			i++;
+		}
+		if (ip < pic->width)
+		{
+			dot->t_y = 0;
+			dot->t_x = 0;
+			dot->t_eval = 0;
+			return (0);
+		}
+		tmp_dot->j++;
+	}
+	if (dot->eval == 0 && ch_0)
+		dot->eval = dot->t_eval;
+	if (dot->t_eval <= dot->eval && ch_0)
+	{
+		dot->eval = dot->t_eval;
+		dot->x = dot->t_x;
+		dot->y = dot->t_y;
+	}
+	return (0);
 }
 
- void		free_heatmap(t_map *map, int height)
+int		ft_algorithm(t_map *map, t_piece *pic)
 {
-    int i = 0;
+	int		j;
+	int		i;
+	t_coord	dot;
+	t_tmpcd	tmp_dot;
 
+	j = -1;
+	dot.y = 0;
+	dot.x = 0;
+	dot.eval = 0;
+	while (++j < map->height)
+	{
+		i = -1;
+		while (++i < map->width)
+		{
+			if (j + pic->height <= map->height && i + pic->width <= map->width)
+			{
+				tmp_dot.j = j;
+				tmp_dot.const_i = i;
+				ft_fitt(map, &tmp_dot, pic, &dot);
+			}
+		}
+	}
+	ft_print_coord(dot.y, dot.x, map, pic);
+	return (0);
+}
+
+void	ft_print_coord(int y, int x, t_map *map, t_piece *pic)
+{
+	ft_putnbr(y);
+	write(1, " ", 1);
+	ft_putnbr(x);
+	write(1, "\n", 1);
+	ft_free_string_arr(map->map);
+	free_heatmap(map, map->height);
+	ft_free_string_arr(pic->pic);
+}
+
+void	ft_free_string_arr(char **t)
+{
+	char	**curr;
+
+	if (t && *t)
+	{
+		curr = t;
+		while (*curr)
+			free(*(curr++));
+		free(t);
+		t = NULL;
+	}
+	if (t)
+	{
+		free(t);
+		t = NULL;
+	}
+}
+
+void	free_heatmap(t_map *map, int height)
+{
+	int i;
+
+	i = 0;
 	while (i < height)
 	{
 		if (map->ht_map[i])
@@ -146,7 +135,7 @@ void		ft_destroy_string_arr(char **t) //??? test
 			free(map->ht_map[i]);
 			map->ht_map[i] = NULL;
 		}
-        i++;
+		i++;
 	}
 	free(map->ht_map);
 	map->ht_map = NULL;

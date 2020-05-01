@@ -12,36 +12,29 @@
 
 #include "../include/filler.h"
 
-int main(void)
+int	main(void)
 {
-    t_start inf_pl;
-    t_map   map;
-    t_piece pic;
+	t_start	inf;
+	t_map	map;
+	t_piece	pic;
 
-    
-    //map.fd = open("/Users/romannezgovorov/Desktop/code/filler/srcs/myfile.txt", O_RDONLY);
-    map.fd = 0;
-    if (!ft_parse_player(&inf_pl, &map))
-        return (0);
-    while (1)
-    {
-        if (!ft_parse_map_size(&map))
-            return(0);
-        if (!ft_parse_map(&map))
-            return (0);
-        if (!ft_create_heatmap(&map, &inf_pl))
-            return (0);
-        //printf("%d%d\n", map.ht_map[0][0], map.ht_map[0][1]); //
-        if (!ft_parse_piece_size(&map, &pic))
-            return (0);
-        if (!ft_parse_piece(&map, &pic))
-            return (0);
-        ft_algorithm(&map, &pic);
-        
-    }
-        
-
-    //free(map->map);
-    return (0);
+	map.fd = open("/Users/romannezgovorov/Desktop/code/Filler/myfile.txt", O_RDONLY);
+	//map.fd = 0;
+	if (!ft_parse_player(&inf, &map))
+		return (0);
+	while (1)
+	{
+		if (!ft_parse_map_size(&map))
+			return (0);
+		if (!ft_parse_map(&map))
+			return (0);
+		if (!ft_create_heatmap(&map, &inf))
+			return (0);
+		if (!ft_parse_piece_size(&map, &pic))
+			return (0);
+		if (!ft_parse_piece(&map, &pic))
+			return (0);
+		ft_algorithm(&map, &pic);
+	}
+	return (0);
 }
-

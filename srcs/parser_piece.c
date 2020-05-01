@@ -12,68 +12,103 @@
 
 #include "../include/filler.h"
 
-int ft_parse_piece_size(t_map *map, t_piece *pic)
+int	ft_parse_piece_size(t_map *map, t_piece *pic)
 {
-    char    *line;
-    char    **tab;
+	char	*line;
+	char	**tab;
 
-    get_next_line(map->fd, &line);
-    if (!line || !line[0]) //
-        return (0);        //      
-    tab = ft_strsplit(line, ' ');
-    free(line); // new
-    line = NULL; // new
-    if (ft_strcmp(tab[0], "Piece") != 0 || !tab[1] || !tab[2])
-        return (0);
-    pic->height = ft_atoi(tab[1]);
-
-    //pic->width = ft_atoi(ft_strsplit(tab[2], ':')[0]);//  разделить отдельно и почистить
-    
-    char **split =  ft_strsplit(tab[2], ':');
-    pic->width = ft_atoi(split[0]);
-
-        char	**current;
-    	if (tab && *tab)
+	if (!get_next_line(map->fd, &line))
 	{
-		current = ((tab));
-		while ((*current))
-			free((*(current++)));
-		free((tab));
-		(tab) = NULL;
-    }
-
-  	if (split && *split)
+		ft_free_string_arr(map->map);
+		free_heatmap(map, map->height);
+		return (0);
+	}
+	if (!line || !line[0])
 	{
-		current = ((split));
-		while ((*current))
-			free((*(current++)));
-		free((split));
-		(split) = NULL;
-    }
-    return (1);
+		if (line)
+			ft_strdel(&line);
+		ft_free_string_arr(map->map);
+		free_heatmap(map, map->height);
+		return (0);
+	}
+	tab = ft_strsplit(line, ' ');
+	ft_strdel(&line);
+	if (!ft_pic_w_h(tab, pic, map))
+		return (0);
+	return (1);
 }
 
-int ft_parse_piece(t_map *map, t_piece *pic)
+int	ft_pic_w_h(char **tab, t_piece *pic, t_map *map)
 {
-    char    *line;
-    int     j;
+	char	**arr;
 
-    //валидация на строку на каждую?
-    j = 0;
-    if (!(pic->pic = (char**)malloc(sizeof(char*) * pic->height + 1)))
-        return (0); // проверить на выделение и зафришить в конце
-    while (j < pic->height)
-    {
-        //line = "12345678";
-        get_next_line(map->fd, &line);
-        //map->map[j] = (char*)malloc(sizeof(char) * map->width); // проверить на выделение и зафришить в конце
-        if (!line || !line[0])
-            return (0);
-        pic->pic[j] = line;
-        //printf("%s\n", pic->pic[j]);
-        j++;
-        line = NULL;
-    }
-    pic->pic[j] = NULL;
-    return (1);
+	if (ft_strcmp(tab[0], "Piece") != 0 || ft_len_arr(tab) != 3)
+	{
+		ft_free_string_arr(map->map);
+		free_heatmap(map, map->height);
+		ft_free_string_arr(tab);
+		return (0);
+	}
+	pic->height = ft_atoi(tab[1]);
+	arr = ft_strsplit(tab[2], ':');
+	pic->width = ft_atoi(arr[0]);
+	ft_free_string_arr(tab);
+	ft_free_string_arr(arr);
+	return (1);
+}
+
+int	ft_parse_piece(t_map *map, t_piece *pic)
+{
+	if (!(pic->pic = (char**)malloc(sizeof(char*) * (pic->height + 1))))
+	{
+		ft_free_string_arr(map->map);
+		free_heatmap(map, map->height);
+		return (0);
+	}
+	if (!ft_read_pic(0, pic, map))
+		return (0);
+	pic->pic[pic->height] = NULL;
+	return (1);
+}
+
+int	ft_read_pic(int j, t_piece *pic, t_map *map)
+{
+	char	*line;
+
+	while (j < pic->height)
+	{
+		if (!get_next_line(map->fd, &line))
+		{
+			ft_free_string_arr(map->map);
+			free_heatmap(map, map->height);
+			pic->pic[j] = NULL;
+			ft_free_string_arr(pic->pic);
+			return (0);
+		}
+		if (!line || !line[0])
+		{
+			ft_free_string_arr(map->map);
+			free_heatmap(map, map->height);
+			pic->pic[j] = NULL;
+			ft_free_string_arr(pic->pic);
+			return (0);
+		}
+		pic->pic[j] = line;
+		j++;
+		line = NULL;
+	}
+	return (1);
+}
+
+int	ft_len_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	if (arr && *arr)
+	{
+		while (arr[i])
+			i++;
+	}
+	return (i);
 }
