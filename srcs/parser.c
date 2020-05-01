@@ -32,7 +32,7 @@ int	ft_parse_player(t_start *inf, t_map *map)
 	if (line[++i] == '1')
 		ft_fill_infpl(inf, 'O', 'X');
 	if (line[i] == '2')
-		ft_fill_infpl(inf, 'O', 'X');
+		ft_fill_infpl(inf, 'X', 'O');
 	ft_strdel(&line);
 	if (inf->my == 'A')
 		return (0);
