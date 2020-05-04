@@ -18,8 +18,7 @@ int	main(void)
 	t_map	map;
 	t_piece	pic;
 
-	map.fd = open("/Users/romannezgovorov/Desktop/code/Filler/myfile.txt", O_RDONLY);
-	//map.fd = 0;
+	map.fd = 0;
 	if (!ft_parse_player(&inf, &map))
 		return (0);
 	while (1)

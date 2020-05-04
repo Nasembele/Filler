@@ -12,7 +12,7 @@
 
 #include "../include/filler.h"
 
-int		ft_fitt(t_map *map, t_tmpcd *tmp_dot, t_piece *pic, t_coord *dot)
+void	ft_fitt(t_map *map, t_tmpcd *tmp_dot, t_piece *pic, t_coord *dot)
 {
 	int	jp;
 	int	ip;
@@ -20,49 +20,25 @@ int		ft_fitt(t_map *map, t_tmpcd *tmp_dot, t_piece *pic, t_coord *dot)
 	int	i;
 
 	jp = -1;
-	ip = 0;
-	ch_0 = 0;
-	dot->t_eval = 0;
-	dot->t_y = tmp_dot->j;
-	dot->t_x = tmp_dot->const_i;
+	ch_0 = ft_init(dot, tmp_dot);
 	while (++jp < pic->height)
 	{
 		ip = -1;
 		i = tmp_dot->const_i;
 		while (++ip < pic->width)
 		{
-			if (map->ht_map[tmp_dot->j][i] == -1 && pic->pic[jp][ip] == '*')
+			if (cond1(map->ht_map[tmp_dot->j][i], pic->pic[jp][ip], ch_0))
 				break ;
-			if (map->ht_map[tmp_dot->j][i] == 0
-			&& pic->pic[jp][ip] == '*' && ch_0 == 1)
-				break ;
-			if (map->ht_map[tmp_dot->j][i] == 0
-			&& pic->pic[jp][ip] == '*' && ch_0 == 0)
-				ch_0 = 1;
+			ch_0 = cond2(map->ht_map[tmp_dot->j][i], pic->pic[jp][ip], ch_0);
 			if (map->ht_map[tmp_dot->j][i] != 0
-			&& map->ht_map[tmp_dot->j][i] != -1
-			&& pic->pic[jp][ip] == '*')
+			&& map->ht_map[tmp_dot->j][i] != -1 && pic->pic[jp][ip] == '*')
 				dot->t_eval = dot->t_eval + map->ht_map[tmp_dot->j][i];
 			i++;
 		}
-		if (ip < pic->width)
-		{
-			dot->t_y = 0;
-			dot->t_x = 0;
-			dot->t_eval = 0;
-			return (0);
-		}
-		tmp_dot->j++;
+		if (!ft_null(ip, pic, dot, tmp_dot))
+			return ;
 	}
-	if (dot->eval == 0 && ch_0)
-		dot->eval = dot->t_eval;
-	if (dot->t_eval <= dot->eval && ch_0)
-	{
-		dot->eval = dot->t_eval;
-		dot->x = dot->t_x;
-		dot->y = dot->t_y;
-	}
-	return (0);
+	ft_result(dot, ch_0);
 }
 
 int		ft_algorithm(t_map *map, t_piece *pic)

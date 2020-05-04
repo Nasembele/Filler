@@ -20,7 +20,7 @@ SRC_DIR = srcs/
 OBJ_DIR = obj/
 LIB_DIR = libft/
 
-SRC = main.c parser.c parser_piece.c heatmap.c algorithm.c
+SRC = main.c parser.c parser_piece.c heatmap.c algorithm.c alg_help.c
 
 HEADER = include/
 
