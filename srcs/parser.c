@@ -16,9 +16,13 @@ int	ft_parse_player(t_start *inf, t_map *map)
 {
 	char	*line;
 	int		i;
+	int		gnl;
+	char	**tab;
 
 	i = 0;
-	if (!get_next_line(map->fd, &line))
+	line = NULL;
+	gnl = get_next_line(map->fd, &line);
+	if (gnl == 0 || gnl == -1)
 		return (0);
 	if (!line || !line[i])
 	{
@@ -27,13 +31,21 @@ int	ft_parse_player(t_start *inf, t_map *map)
 		return (0);
 	}
 	ft_fill_infpl(inf, 'A', 'A');
-	while (line[i] && line[i] != 'p')
-		i++;
-	if (line[++i] == '1')
-		ft_fill_infpl(inf, 'O', 'X');
-	if (line[i] == '2')
-		ft_fill_infpl(inf, 'X', 'O');
+	tab = ft_strsplit(line, ' ');
 	ft_strdel(&line);
+	if (ft_strcmp(tab[0], "$$$") != 0 || ft_len_arr(tab) != 5)
+	{
+		ft_free_string_arr(tab);
+		return (0);
+	}
+	if (ft_strlen(tab[2]) == 2)
+	{
+		if (tab[2][1] == '1')
+			ft_fill_infpl(inf, 'O', 'X');
+		if (tab[2][1] == '2')
+			ft_fill_infpl(inf, 'X', 'O');
+	}
+	ft_free_string_arr(tab);
 	if (inf->my == 'A')
 		return (0);
 	return (1);
@@ -51,8 +63,11 @@ int	ft_parse_map_size(t_map *map)
 	char	*line;
 	char	**tab;
 	char	**arr;
+	int		gnl;
 
-	if (!get_next_line(map->fd, &line))
+	line = NULL;
+	gnl = get_next_line(map->fd, &line);
+	if (gnl == 0 || gnl == -1)
 		return (0);
 	if (!line || !line[0])
 	{
@@ -78,10 +93,15 @@ int	ft_parse_map_size(t_map *map)
 int	ft_parse_map(t_map *map)
 {
 	char	*line;
+	int		gnl;
 
-	if (!get_next_line(map->fd, &line))
+	line = NULL;
+	gnl = get_next_line(map->fd, &line);
+	if (gnl == 0 || gnl == -1)
 		return (0);
-	if (line)
+	if (!line)
+		return (0);
+	if (line) // ?
 		ft_strdel(&line);
 	if (!(map->map = (char**)malloc(sizeof(char*) * (map->height + 1))))
 		return (0);
@@ -93,10 +113,12 @@ int	ft_parse_map(t_map *map)
 int	ft_read_map(int j, t_map *map, char *line)
 {
 	char	**tab;
+	int		gnl;
 
 	while (j < map->height)
 	{
-		if (!get_next_line(map->fd, &line))
+		gnl = get_next_line(map->fd, &line);
+		if (gnl == 0 || gnl == -1)
 		{
 			map->map[j] = NULL;
 			ft_free_string_arr(map->map);

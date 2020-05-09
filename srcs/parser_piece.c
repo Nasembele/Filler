@@ -16,8 +16,10 @@ int	ft_parse_piece_size(t_map *map, t_piece *pic)
 {
 	char	*line;
 	char	**tab;
+	int		gnl;
 
-	if (!get_next_line(map->fd, &line))
+	gnl = get_next_line(map->fd, &line);
+	if (gnl == 0 || gnl == -1)
 	{
 		ft_free_string_arr(map->map);
 		free_heatmap(map, map->height);
@@ -74,10 +76,12 @@ int	ft_parse_piece(t_map *map, t_piece *pic)
 int	ft_read_pic(int j, t_piece *pic, t_map *map)
 {
 	char	*line;
+	int		gnl;
 
 	while (j < pic->height)
 	{
-		if (!get_next_line(map->fd, &line))
+		gnl = get_next_line(map->fd, &line);
+		if (gnl == 0 || gnl == -1)
 		{
 			ft_free_string_arr(map->map);
 			free_heatmap(map, map->height);
