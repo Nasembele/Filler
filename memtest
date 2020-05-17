@@ -1,6 +1,0 @@
-==9726== Memcheck, a memory error detector
-==9726== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==9726== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==9726== Command: ./resources/filler_vm -f ./resources/maps/map01 -p1 ./resources/players/carli.filler -p2 ./soyster.filler
-==9726== Parent PID: 6754
-==9726== 
