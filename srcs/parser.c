@@ -15,46 +15,52 @@
 int	ft_parse_player(t_start *inf, t_map *map)
 {
 	char	*line;
-	int		i;
 	int		gnl;
 	char	**tab;
 
-	i = 0;
 	line = NULL;
 	gnl = get_next_line(map->fd, &line);
-	if (gnl == 0 || gnl == -1)
-		return (0);
-	if (!line || !line[i])
+	if (gnl == 0 || gnl == -1 || !line || !line[0])
 	{
 		if (line)
 			ft_strdel(&line);
 		return (0);
 	}
-	ft_fill_infpl(inf, 'A', 'A');
 	tab = ft_strsplit(line, ' ');
 	ft_strdel(&line);
+	ft_fill_infpl(inf, tab, 1);
 	if (ft_strcmp(tab[0], "$$$") != 0 || ft_len_arr(tab) != 5)
 	{
 		ft_free_string_arr(tab);
 		return (0);
 	}
-	if (ft_strlen(tab[2]) == 2)
-	{
-		if (tab[2][1] == '1')
-			ft_fill_infpl(inf, 'O', 'X');
-		if (tab[2][1] == '2')
-			ft_fill_infpl(inf, 'X', 'O');
-	}
+	ft_fill_infpl(inf, tab, 2);
 	ft_free_string_arr(tab);
 	if (inf->my == 'A')
 		return (0);
 	return (1);
 }
 
-int	ft_fill_infpl(t_start *inf, char my, char en)
+int	ft_fill_infpl(t_start *inf, char **tab, int key)
 {
-	inf->my = my;
-	inf->en = en;
+	if (key == 1)
+	{
+		inf->my = 'A';
+		inf->en = 'A';
+	}
+	if (key == 2 && ft_strlen(tab[2]) == 2)
+	{
+		if (tab[2][1] == '1')
+		{
+			inf->my = 'O';
+			inf->en = 'X';
+		}
+		if (tab[2][1] == '2')
+		{
+			inf->my = 'X';
+			inf->en = 'O';
+		}
+	}
 	return (0);
 }
 
@@ -67,9 +73,7 @@ int	ft_parse_map_size(t_map *map)
 
 	line = NULL;
 	gnl = get_next_line(map->fd, &line);
-	if (gnl == 0 || gnl == -1)
-		return (0);
-	if (!line || !line[0])
+	if (gnl == 0 || gnl == -1 || !line || !line[0])
 	{
 		if (line)
 			ft_strdel(&line);
@@ -77,11 +81,8 @@ int	ft_parse_map_size(t_map *map)
 	}
 	tab = ft_strsplit(line, ' ');
 	ft_strdel(&line);
-	if (ft_strcmp(tab[0], "Plateau") != 0 || ft_len_arr(tab) != 3)
-	{
-		ft_free_string_arr(tab);
+	if (!ft_checklenarr(tab, map, 0, 1))
 		return (0);
-	}
 	map->height = ft_atoi(tab[1]);
 	arr = ft_strsplit(tab[2], ':');
 	map->width = ft_atoi(arr[0]);
@@ -101,7 +102,7 @@ int	ft_parse_map(t_map *map)
 		return (0);
 	if (!line)
 		return (0);
-	if (line) // ?
+	if (line)
 		ft_strdel(&line);
 	if (!(map->map = (char**)malloc(sizeof(char*) * (map->height + 1))))
 		return (0);
@@ -126,13 +127,8 @@ int	ft_read_map(int j, t_map *map, char *line)
 		}
 		tab = ft_strsplit(line, ' ');
 		ft_strdel(&line);
-		if (ft_len_arr(tab) != 2)
-		{
-			map->map[j] = NULL;
-			ft_free_string_arr(map->map);
-			ft_free_string_arr(tab);
+		if (!ft_checklenarr(tab, map, j, 2))
 			return (0);
-		}
 		map->map[j] = ft_strdup(tab[1]);
 		j++;
 		ft_free_string_arr(tab);

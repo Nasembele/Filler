@@ -81,15 +81,7 @@ int	ft_read_pic(int j, t_piece *pic, t_map *map)
 	while (j < pic->height)
 	{
 		gnl = get_next_line(map->fd, &line);
-		if (gnl == 0 || gnl == -1)
-		{
-			ft_free_string_arr(map->map);
-			free_heatmap(map, map->height);
-			pic->pic[j] = NULL;
-			ft_free_string_arr(pic->pic);
-			return (0);
-		}
-		if (!line || !line[0])
+		if (gnl == 0 || gnl == -1 || !line || !line[0])
 		{
 			ft_free_string_arr(map->map);
 			free_heatmap(map, map->height);

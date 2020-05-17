@@ -55,6 +55,7 @@ typedef struct	s_tcoord
 	int			const_i;
 }				t_tmpcd;
 
+int				ft_checklenarr(char **tab, t_map *map, int j, int key);
 int				cond2(int a, char b, int ch_0);
 int				cond1(int a, char b, int ch_0);
 int				ft_init(t_coord *dot, t_tmpcd *tmp_dot);
@@ -65,7 +66,7 @@ int				ft_read_pic(int j, t_piece *pic, t_map *map);
 int				ft_heat(int j, int i, t_start *inf, t_map *map);
 int				ft_pic_w_h(char **tab, t_piece *pic, t_map *map);
 int				ft_read_map(int j, t_map *map, char *line);
-int				ft_fill_infpl(t_start *inf_pl, char my, char en);
+int				ft_fill_infpl(t_start *inf, char **tab, int key);
 int				ft_len_arr(char **arr);
 void			free_heatmap(t_map *map, int height);
 void			ft_free_string_arr(char **arr);

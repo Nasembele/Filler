@@ -20,7 +20,7 @@ SRC_DIR = srcs/
 OBJ_DIR = obj/
 LIB_DIR = libft/
 
-SRC = main.c parser.c parser_piece.c heatmap.c algorithm.c alg_help.c
+SRC = main.c parser.c parser_piece.c heatmap.c algorithm.c alg_help.c parser_help.c
 
 HEADER = include/
 
@@ -36,7 +36,7 @@ $(NAME): $(OBJ_DIR) $(O_PATH)
 $(OBJ_DIR):
 	@mkdir -p obj
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(HEADER)
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c include/filler.h
 	@$(GCC) $(FLAG) -I $(HEADER) -o $@ -c $<
 	
 fclean: clean
